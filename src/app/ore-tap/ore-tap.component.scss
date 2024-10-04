@@ -1,0 +1,52 @@
+.ore-tap-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rock {
+  width: 500px;
+  height: auto;
+  cursor: pointer;
+  position: absolute;
+  z-index: 5;
+
+  // Отключаем выделение текста или элементов при клике
+  user-select: none;
+
+  // Убираем синий контур фокуса при клике
+  outline: none;
+
+  // Отключаем подсветку при нажатии на сенсорных экранах (например, на телефоне)
+  -webkit-tap-highlight-color: transparent;
+
+  // Отключаем выделение текста для всех браузеров
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.points-display {
+  position: absolute;
+  font-size: 2.5rem;
+  font-weight: bold;
+  animation: points-rise 1s forwards;
+  color: #4fd1c5;
+  z-index: 9999999;
+  transition: transform 0.3s ease;
+}
+
+@keyframes points-rise {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+}

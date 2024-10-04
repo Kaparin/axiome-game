@@ -1,0 +1,23 @@
+<div class="loading-container">
+  <img src="assets/loading-page1.png" alt="Планета AXIOME" class="background-image">
+
+  <!-- Круглый ползунок загрузки -->
+  <div class="circular-loader">
+    <svg class="loader-circle" viewBox="0 0 36 36">
+      <path
+        class="circle-bg"
+        d="M18 2.0845
+        a 15.9155 15.9155 0 0 1 0 31.831
+        a 15.9155 15.9155 0 0 1 0 -31.831"
+      />
+      <path
+        class="circle"
+        [attr.stroke-dasharray]="strokeDashArray"
+        d="M18 2.0845
+        a 15.9155 15.9155 0 0 1 0 31.831
+        a 15.9155 15.9155 0 0 1 0 -31.831"
+      />
+    </svg>
+    <p>Загрузка {{ loadingProgress }}%</p>
+  </div>
+</div>

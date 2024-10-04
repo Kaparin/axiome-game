@@ -1,0 +1,22 @@
+<div class="ore-tap-container">
+  <div class="total-orex">OREX: {{ totalOrex() }}</div>
+
+  <img
+    src="assets/orex.png"
+    alt="Руда"
+    class="rock"
+    (touchstart)="onTap($event)"
+    (click)="onTap($event)"
+    (contextmenu)="preventDefault($event)"
+  />
+
+  <mat-progress-bar mode="determinate" [value]="totalOrex()"></mat-progress-bar>
+
+  <div *ngFor="let point of pointsList()" @pointsAnimation>
+    <div
+      class="points-display"
+      [ngStyle]="{ left: point.x + 'px', top: point.y + 'px' }">
+      +{{ orexPerTap }}
+    </div>
+  </div>
+</div>
