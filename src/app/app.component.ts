@@ -1,14 +1,16 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';  // Импортируем все необходимые модули
+import { Component, AfterViewInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
-import { signal } from '@angular/core';  // Импортируем функцию signal
+import { signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, PLATFORM_ID } from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
+import { PlayerStateService } from './services/player-state.service';  // Подключаем PlayerStateService
+import { GameService } from './services/game.service';  // Подключаем GameService
 
 
-
+declare var Telegram: any;
 
 @Component({
   selector: 'app-root',
@@ -16,10 +18,11 @@ import { Inject, PLATFORM_ID } from '@angular/core';
   styleUrls: ['./app.component.scss'],
   imports: [
     CommonModule,
-    LoadingScreenComponent,  // Импортируем компонент для использования
+    LoadingScreenComponent,
     MainPageComponent,
     NavigationBarComponent
   ],
+
   standalone: true
 })
 export class AppComponent implements AfterViewInit {
@@ -28,10 +31,15 @@ export class AppComponent implements AfterViewInit {
   loadingComplete = signal(false);
   activeTab = signal('dobycha');
   isBrowser: boolean;
+  user: any;  // Данные пользователя Telegram
 
   @ViewChild('telegramLogin', { static: false }) telegramLoginContainer!: ElementRef;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private playerStateService: PlayerStateService,  // Инжектируем PlayerStateService
+    private gameService: GameService  // Инжектируем GameService
+  ) {
     // Определяем, выполняется ли приложение на стороне клиента
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.simulateLoading();
@@ -64,6 +72,37 @@ export class AppComponent implements AfterViewInit {
       script.setAttribute('data-request-access', 'write');
 
       this.telegramLoginContainer.nativeElement.appendChild(script);
+    }
+  }
+
+  ngOnInit() {
+    // Инициализация Telegram Web App SDK и получение данных пользователя
+    if (this.isBrowser) {
+      const tg = Telegram.WebApp;
+      this.user = tg.initDataUnsafe?.user;
+
+      if (this.user) {
+        console.log('Пользователь авторизован:', this.user);
+        // Инициализируем игрока и прогресс в PlayerStateService
+        this.playerStateService.setPlayer(this.user.id, 0);  // Прогресс начинаем с 0 или загружаем с сервера
+      } else {
+        console.log('Данные пользователя не получены.');
+      }
+    }
+  }
+
+  // Метод для обновления прогресса и синхронизации с сервером
+  updateProgressInGame(increment: number) {
+    const telegramId = this.playerStateService.getTelegramId();
+    const currentProgress = this.playerStateService.getProgress();
+
+    if (telegramId) {
+      this.playerStateService.updateProgress(increment);  // Локально обновляем прогресс
+
+      // Отправляем прогресс на сервер
+      this.gameService.updateProgress(telegramId, currentProgress + increment).subscribe(response => {
+        console.log('Прогресс синхронизирован с сервером:', response);
+      });
     }
   }
 }

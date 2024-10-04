@@ -11,4 +11,3 @@ import { OreTapComponent } from '../ore-tap/ore-tap.component';
 export class MainPageComponent {
 
 }
-
