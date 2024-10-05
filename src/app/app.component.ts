@@ -10,8 +10,6 @@ import { PlayerStateService } from './services/player-state.service';  // Под
 import { GameService } from './services/game.service';  // Подключаем GameService
 
 
-declare var Telegram: any;
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -31,9 +29,6 @@ export class AppComponent implements AfterViewInit {
   loadingComplete = signal(false);
   activeTab = signal('dobycha');
   isBrowser: boolean;
-  user: any;  // Данные пользователя Telegram
-
-  @ViewChild('telegramLogin', { static: false }) telegramLoginContainer!: ElementRef;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -43,6 +38,12 @@ export class AppComponent implements AfterViewInit {
     // Определяем, выполняется ли приложение на стороне клиента
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.simulateLoading();
+  }
+
+  ngAfterViewInit(){ // Here is the empty required method
+    // You originally implemented Telegram here.
+    // Now that this is removed, you can leave this method empty,
+    // or you can remove `implements AfterViewInit` from the class definition if you no longer need it.
   }
 
   simulateLoading() {
@@ -58,37 +59,6 @@ export class AppComponent implements AfterViewInit {
 
   selectTab(tab: string) {
     this.activeTab.set(tab);
-  }
-
-  ngAfterViewInit() {
-    if (this.isBrowser) {
-      // Код для работы с документом только на стороне клиента (браузере)
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = 'https://telegram.org/js/telegram-widget.js?7';
-      script.setAttribute('data-telegram-login', 'AxmCryptoGalaxy_bot');
-      script.setAttribute('data-size', 'large');
-      script.setAttribute('data-auth-url', 'https://f481-84-229-70-159.ngrok-free.app/auth/telegram');
-      script.setAttribute('data-request-access', 'write');
-
-      this.telegramLoginContainer.nativeElement.appendChild(script);
-    }
-  }
-
-  ngOnInit() {
-    // Инициализация Telegram Web App SDK и получение данных пользователя
-    if (this.isBrowser) {
-      const tg = Telegram.WebApp;
-      this.user = tg.initDataUnsafe?.user;
-
-      if (this.user) {
-        console.log('Пользователь авторизован:', this.user);
-        // Инициализируем игрока и прогресс в PlayerStateService
-        this.playerStateService.setPlayer(this.user.id, 0);  // Прогресс начинаем с 0 или загружаем с сервера
-      } else {
-        console.log('Данные пользователя не получены.');
-      }
-    }
   }
 
   // Метод для обновления прогресса и синхронизации с сервером
