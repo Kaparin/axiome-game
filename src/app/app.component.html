@@ -1,21 +1,24 @@
 <!-- Telegram Login Widget будет загружен сюда -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 <div #telegramLogin></div>
 
+<!-- Экран загрузки -->
 <app-loading-screen *ngIf="!loadingComplete()" [loadingProgress]="loadingProgress()"></app-loading-screen>
 
 <!-- После завершения загрузки отображаем активный экран -->
 <div *ngIf="loadingComplete()">
-  <!-- "Добыча" -->
+  <!-- Вкладка "Добыча" -->
   <ng-container *ngIf="activeTab() === 'dobycha'">
     <app-main-page></app-main-page>
   </ng-container>
 
-  <!-- Рейтинг -->
+  <!-- Вкладка "Рейтинг" -->
   <ng-container *ngIf="activeTab() === 'rating'">
     <h1>Рейтинг</h1>
   </ng-container>
 
-  <!-- Профиль -->
+  <!-- Вкладка "Профиль" -->
   <ng-container *ngIf="activeTab() === 'profile'">
     <h1>Профиль</h1>
   </ng-container>

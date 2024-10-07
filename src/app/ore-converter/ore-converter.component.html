@@ -1,0 +1,13 @@
+<div class="ore-converter">
+  <!-- Кнопка для конвертации Orex в Xiom -->
+  <button
+    class="convert-button"
+    [disabled]="orex < 10"
+    (click)="onConvertClick()"
+  >
+    Конвертировать Orex в Xiom
+  </button>
+
+  <!-- Отображение текущего количества Xiom -->
+  <div class="xiom-text">XIOM: {{ xiom }}</div>
+</div>

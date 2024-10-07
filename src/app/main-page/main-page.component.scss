@@ -2,25 +2,73 @@
   position: relative;
   width: 100vw;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  color: #fff; // Белый цвет текста
-  font-family: 'Roboto', sans-serif; // Шрифт текста
-  font-size: 1.5rem; // Размер шрифта
-  text-align: center; // Выравнивание текста по центру
+}
 
-  // Стили для фонового изображения планеты
-  .background-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1; // Фон остается позади остальных элементов
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  object-fit: cover;
+}
+
+.orex-stats {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.orex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.orex-text, .xiom-text {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4fd1c5;
+  margin-bottom: 10px;
+}
+
+.xiom-text {
+  color: #ff9f1c;  /* Цвет для Xiom */
+}
+.orex-progress-bar {
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.rock, .converter {
+  width: 150px;
+  height: auto;
+  cursor: pointer;
+  margin-top: 20px;
+  user-select: none;
+  transition: filter 0.3s ease-in-out;
+}
+
+.converter {
+  filter: grayscale(100%); /* По умолчанию делаем конвертер неактивным */
+}
+
+.converter.active {
+  filter: grayscale(0%);
+}
+
+@media screen and (max-width: 768px) {
+  .orex-progress-bar {
+    width: 200px;
   }
 
-  // Остальные элементы остаются статичными
-  * {
-    position: static; // Убедимся, что все элементы остаются статичными
+  .rock, .converter {
+    width: 100px;
   }
 }

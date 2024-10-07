@@ -1,7 +1,19 @@
 <div class="main-page-container">
   <img src="assets/main-page.jpg" alt="Планета AXIOME" class="background-image">
-  <!-- Просто рендерим компонент руды, без передачи telegramId -->
-  <app-ore-tap></app-ore-tap>
 
+  <!-- Компонент для добычи Orex -->
+  <app-ore-tap
+    [totalOrex]="totalOrex()"
+    (oreTap)="handleOreTap()"
+  ></app-ore-tap>
 
+  <!-- Компонент для конвертации Orex в Xiom -->
+  <app-ore-converter
+    [orex]="totalOrex()"
+    [xiom]="totalXiom()"
+    (convert)="handleConvert()"
+  ></app-ore-converter>
+
+  <!-- Отображение количества Xiom -->
+  <div class="xiom-text">XIOM: {{ totalXiom() }}</div>
 </div>

@@ -1,21 +1,27 @@
 <div class="ore-tap-container">
-  <div class="total-orex">OREX: {{ totalOrex() }}</div>
+  <!-- Отображение текущего количества Orex -->
+  <div class="orex-container">
+    <div class="orex-text">OREX: {{ totalOrex }}</div>
+    <div class="orex-progress-bar">
+      <mat-progress-bar mode="determinate" [value]="totalOrex"></mat-progress-bar>
+    </div>
+  </div>
 
+  <!-- Изображение руды, на которое пользователи будут тапать -->
   <img
     src="assets/orex.png"
     alt="Руда"
     class="rock"
+    [class.highlighted]="rockState() === 'highlighted'"
     (touchstart)="onTap($event)"
     (click)="onTap($event)"
-    (contextmenu)="preventDefault($event)"
   />
 
-  <mat-progress-bar mode="determinate" [value]="totalOrex()"></mat-progress-bar>
-
+  <!-- Анимация отображения очков при тапе -->
   <div *ngFor="let point of pointsList()" @pointsAnimation>
     <div
       class="points-display"
-      [ngStyle]="{ left: point.x + 'px', top: point.y + 'px' }">
+      [ngStyle]="{ left: point.x + 'px', top: point.y + 'px', color: point.color }">
       +{{ orexPerTap }}
     </div>
   </div>

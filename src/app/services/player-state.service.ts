@@ -8,8 +8,7 @@ export class PlayerStateService {
   private telegramIdSubject = new BehaviorSubject<string | null>(null);
   private progressSubject = new BehaviorSubject<number>(0);
 
-  // Наблюдатели за состоянием
-
+  // Наблюдатели
   telegramId$ = this.telegramIdSubject.asObservable();
   progress$ = this.progressSubject.asObservable();
 
@@ -19,7 +18,7 @@ export class PlayerStateService {
     this.progressSubject.next(progress);
   }
 
-  // Метод для обновления прогресса
+  // Обновление прогресса
   updateProgress(increment: number) {
     const currentProgress = this.progressSubject.getValue();
     this.progressSubject.next(currentProgress + increment);

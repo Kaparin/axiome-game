@@ -3,31 +3,46 @@
   width: 100vw;
   height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+.orex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px; /* Отступ между прогресс-баром и рудой */
+}
+
+.orex-text {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4fd1c5;
+  margin-bottom: 10px;
+}
+
+.orex-progress-bar {
+  width: 300px; /* Задаем ширину прогресс-бар */
+  margin-bottom: 20px; /* Отступ между прогресс-баром и рудой */
 }
 
 .rock {
-  width: 500px;
+  width: 200px;
   height: auto;
   cursor: pointer;
-  position: absolute;
-  z-index: 5;
-
-  // Отключаем выделение текста или элементов при клике
   user-select: none;
-
-  // Убираем синий контур фокуса при клике
-  outline: none;
-
-  // Отключаем подсветку при нажатии на сенсорных экранах (например, на телефоне)
-  -webkit-tap-highlight-color: transparent;
-
-  // Отключаем выделение текста для всех браузеров
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none;
+  -webkit-tap-highlight-color: transparent; /* Убираем выделение на мобильных устройствах */
+  outline: none; /* Убираем фокус при клике */
+  transition: filter 0.3s ease-in-out;
+  filter: drop-shadow(0 0 15px rgba(0, 0, 255, 0.5)); /* Эффект свечения */
+}
+
+.rock.highlighted {
+  filter: drop-shadow(0 0 25px rgba(0, 100, 255, 1)); /* Подсветка при нажатии */
 }
 
 .points-display {
@@ -35,18 +50,19 @@
   font-size: 2.5rem;
   font-weight: bold;
   animation: points-rise 1s forwards;
-  color: #4fd1c5;
-  z-index: 9999999;
+  z-index: 9999;
   transition: transform 0.3s ease;
+  transform-origin: center;
 }
 
 @keyframes points-rise {
   0% {
-    transform: translateY(0);
+    transform: translate(0, 0) scale(1);
     opacity: 1;
   }
   100% {
-    transform: translateY(-100px);
+    transform: translate(var(--random-x), var(--random-y)) scale(1.2); /* Движение по случайной траектории */
     opacity: 0;
   }
 }
+

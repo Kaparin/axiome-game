@@ -5,7 +5,6 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
 
-// The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
@@ -17,15 +16,36 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
+  // Middleware для обработки JSON-запросов
+  server.use(express.json());
+
+  // Пример Express Rest API для обновления данных пользователя
+  server.post('/api/orex/update', (req, res) => {
+    const { telegramId, firstName, lastName, username, orex, xiom } = req.body;
+
+    if (!telegramId || orex == null || xiom == null) {
+      return res.status(400).json({ message: 'Не все данные были предоставлены' });
+    }
+
+    try {
+      // Логика обновления базы данных
+      // Например, обновляем пользователя:
+      // User.findOneAndUpdate({ telegramId }, { firstName, lastName, username, orex, xiom });
+
+      return res.json({ message: 'Данные успешно обновлены' });
+    } catch (error) {
+      console.error('Ошибка обновления пользователя:', error);
+      return res.status(500).json({ message: 'Ошибка обновления данных' });
+    }
+  });
+
   // Serve static files from /browser
   server.get('**', express.static(browserDistFolder, {
     maxAge: '1y',
     index: 'index.html',
   }));
 
-  // All regular routes use the Angular engine
+  // Все остальные маршруты используют Angular engine
   server.get('**', (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;
 
@@ -45,7 +65,7 @@ export function app(): express.Express {
 }
 
 function run(): void {
-  const port = process.env['PORT'] || 4000;
+  const port = process.env['PORT'] || 3000;
 
   // Start up the Node server
   const server = app();

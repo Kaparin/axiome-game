@@ -1,0 +1,25 @@
+.ore-converter {
+  position: absolute;
+  left: 20px;
+  top: 60%;
+}
+
+.convert-button {
+  padding: 10px 20px;
+  background-color: #4fd1c5;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.convert-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.xiom-text {
+  font-size: 2rem;
+  color: #4fd1c5;
+  margin-top: 20px;
+}
